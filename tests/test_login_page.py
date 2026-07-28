@@ -1,4 +1,5 @@
 from playwright.sync_api import Page
+import pytest
 
 from pages.LoginPage import LoginPage
 from pages.InventoryPage import InventoryPage
@@ -17,3 +18,38 @@ def test_login_successfull(page: Page):
     inventory_page = login_page.login_standard_user()
     assert inventory_page.get_title().text_content() == "Products"
 
+
+@pytest.mark.parametrize(
+    "username",
+    [
+        ("standard_user"),
+        ("problem_user"),
+        ("performance_glitch_user"),
+        ("visual_user"),
+    ],
+)
+def test_login_successful(page: Page, username):
+    # Login Object only has to to Loging locators and Methods
+    login_page = LoginPage(page)
+    login_page.open()
+    login_page.login_user(username, "secret_sauce")
+    # Only has access to Invetory stuff
+    invetory_page = InventoryPage(page)
+    assert invetory_page.get_title().text_content() == "Products"
+
+# Negative
+@pytest.mark.parametrize(
+    "username, error",
+    [
+        ("locked_out_user", "Epic sadface: Sorry, this user has been locked out."),
+        ("not_a_user", "Epic sadface: Username and password do not match any user in this service"),
+    ],
+)
+def test_login_fails(page: Page, username, error):
+    login_page = LoginPage(page)
+    login_page.open()
+    login_page.login_user(username, "secret_sauce")
+
+    actual_error = login_page.get_error_message().text_content()
+    #    expected  vs  actual
+    assert error in actual_error

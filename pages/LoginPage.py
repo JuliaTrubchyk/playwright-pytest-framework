@@ -39,9 +39,6 @@ class LoginPage:
         return self.error_message
 
 
-    def login_user(self):
-        self.username_field.fill()
-
 
     # Getters
     def get_login_credentials(self):
