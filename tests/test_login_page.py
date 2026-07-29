@@ -18,26 +18,26 @@ def test_login_successfull(page: Page):
     inventory_page = login_page.login_standard_user()
     assert inventory_page.get_title().text_content() == "Products"
 
-
+# Positive Login
 @pytest.mark.parametrize(
     "username",
     [
-        ("standard_user"),
-        ("problem_user"),
-        ("performance_glitch_user"),
-        ("visual_user"),
+        "standard_user",
+        "problem_user",
+        "performance_glitch_user",
+        "visual_user",
     ],
 )
 def test_login_successful(page: Page, username):
     # Login Object only has to to Loging locators and Methods
     login_page = LoginPage(page)
     login_page.open()
-    login_page.login_user(username, "secret_sauce")
+    invetory_page = login_page.login(username, "secret_sauce")
     # Only has access to Invetory stuff
-    invetory_page = InventoryPage(page)
     assert invetory_page.get_title().text_content() == "Products"
 
-# Negative
+
+# Negative Login
 @pytest.mark.parametrize(
     "username, error",
     [
@@ -48,7 +48,7 @@ def test_login_successful(page: Page, username):
 def test_login_fails(page: Page, username, error):
     login_page = LoginPage(page)
     login_page.open()
-    login_page.login_user(username, "secret_sauce")
+    login_page.submit_login(username, "secret_sauce")
 
     actual_error = login_page.get_error_message().text_content()
     #    expected  vs  actual
