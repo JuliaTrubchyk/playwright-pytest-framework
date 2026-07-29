@@ -24,3 +24,4 @@ test-results/
 .DS_Store
 tests/test_setup.py
 tests/test_first.py
+tests/julia_test.py

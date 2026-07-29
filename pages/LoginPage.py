@@ -25,12 +25,12 @@ class LoginPage:
         self.password_field.fill(password)
         self.login_button.click()
 
-    def login(self, username: str, password: str) -> InventoryPage:
+    def login_user(self, username: str, password: str) -> InventoryPage:
         self.submit_login(username, password)
         return InventoryPage(self.page)
 
     def login_standard_user(self) -> InventoryPage:
-        return self.login("standard_user", "secret_sauce")
+        return self.login_user("standard_user", "secret_sauce")
 
     # def login_standard_user(self)  -> InventoryPage:
     #     self.username_field.fill("standard_user")
