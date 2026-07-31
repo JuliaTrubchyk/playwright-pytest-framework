@@ -103,7 +103,7 @@ def test_file_download(page: Page, link: str) -> None:
     page.goto("https://the-internet.herokuapp.com/download")
 
     with page.expect_download() as download_info:
-        page.get_by_role("link", name=link).click()
+        page.get_by_role("link", name=link, exact=True).click()
 
     download = download_info.value
 
@@ -112,7 +112,7 @@ def test_file_download(page: Page, link: str) -> None:
 def test_hidden_ad(page: Page) -> None:
     page.goto("https://the-internet.herokuapp.com/entry_ad")
     modal = page.locator("#modal")
-    assert modal.is_visible()
+    assert modal.wait_for(state="visible")
 
     page.get_by_text("Close", exact=True).click()
     modal.wait_for(state="hidden")
