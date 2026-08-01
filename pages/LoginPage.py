@@ -30,19 +30,9 @@ class LoginPage:
         return InventoryPage(self.page)
 
     def login_standard_user(self) -> InventoryPage:
+        self.open()
         return self.login_user("standard_user", "secret_sauce")
 
-    # def login_standard_user(self)  -> InventoryPage:
-    #     self.username_field.fill("standard_user")
-    #     self.password_field.fill("secret_sauce")
-    #     self.login_button.click()
-    #     return InventoryPage(self.page)
-
-    # def login_user(self, username: str, password: str)  -> InventoryPage:
-    #     self.username_field.fill(username)
-    #     self.password_field.fill(password)
-    #     self.login_button.click()
-    #     return InventoryPage(self.page)
 
     # Getters
     def get_login_credentials(self):

@@ -15,12 +15,12 @@ def test_sort_dropdown_visible(page: Page):
 
 # Test actual functionality
 @pytest.mark.parametrize(
-    "options",
+    "option",
     [
-        ("az"),
-        ("za"),
-        ("lohi"),
-        ("hilo"),
+        "az",
+        "za",
+        "lohi",
+        "hilo",
     ],
 )
 def test_sort_options(page: Page, options):
