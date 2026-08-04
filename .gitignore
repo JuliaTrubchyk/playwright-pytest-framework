@@ -25,3 +25,5 @@ test-results/
 tests/test_setup.py
 tests/test_first.py
 tests/julia_test.py
+report.html
+assets/

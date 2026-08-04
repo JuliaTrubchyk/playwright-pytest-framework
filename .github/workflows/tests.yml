@@ -1,16 +1,44 @@
 name: Tests
- 
+
 on: push
- 
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - run: pip install -r requirement.txt
+
       - run: playwright install --with-deps chromium
-      - run: xvfb-run python -m pytest
- 
+
+      - name: Run tests
+        run: xvfb-run python -m pytest --tracing=retain-on-failure
+
+      - name: Upload report and artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ github.run_number }}
+          path: |
+            report.html
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Point at the artifact
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" << 'EOF'
+          ### Test artifacts
+
+          Download **test-report-${{ github.run_number }}** from the Artifacts
+          section at the bottom of this page.
+
+          - `report.html` — open it in a browser
+          - `test-results/**/trace.zip` — drop it on https://trace.playwright.dev
+          EOF

@@ -1,12 +1,9 @@
 import pytest
-from playwright.sync_api import Page
-from pages.LoginPage import LoginPage
+
+from pages.InventoryPage import InventoryPage
 
 
-def test_cart_page_load(page: Page):
-    login_page = LoginPage(page)
-    inventory_page = login_page.login_standard_user()
-
+def test_cart_page_load(inventory_page: InventoryPage):
     cart_page = inventory_page.go_to_cart()
 
     # Verify title and checkout button are visible
@@ -14,9 +11,7 @@ def test_cart_page_load(page: Page):
     assert cart_page.checkout_button.is_visible()
 
 
-def test_add_item_to_cart(page: Page):
-    login_page = LoginPage(page)
-    inventory_page = login_page.login_standard_user()
+def test_add_item_to_cart(inventory_page: InventoryPage):
     inventory_page.add_item_to_cart("sauce-labs-backpack")
 
     cart_page = inventory_page.go_to_cart()

@@ -1,12 +1,10 @@
 
 import pytest
-from playwright.sync_api import Page
-from pages.LoginPage import LoginPage
+from pages.InventoryPage import InventoryPage
 
 
-def test_fill_out_page_is_visible(page: Page):
-    login_page = LoginPage(page)
-    inventory_page = login_page.login_standard_user()
+def test_fill_out_page_is_visible(inventory_page: InventoryPage):
+    
     inventory_page.add_item_to_cart("sauce-labs-backpack")
 
     cart_page = inventory_page.go_to_cart()
@@ -17,9 +15,8 @@ def test_fill_out_page_is_visible(page: Page):
     assert checkout_page.continue_button.is_visible()
 
 
-def test_checkout_fields_accept_valid_information(page: Page):
-    login_page = LoginPage(page)
-    inventory_page = login_page.login_standard_user()
+def test_checkout_fields_accept_valid_information(inventory_page: InventoryPage):
+
     inventory_page.add_item_to_cart("sauce-labs-backpack")
 
     cart_page = inventory_page.go_to_cart()
@@ -40,9 +37,8 @@ def test_checkout_fields_accept_valid_information(page: Page):
         ("Anna", "Smith-Jones", "94539"),
     ]
 )
-def test_continue_button_navigates_to_checkout_overview(page: Page, first_name, last_name, postal_code):
-    login_page = LoginPage(page)
-    inventory_page = login_page.login_standard_user()
+def test_continue_button_navigates_to_checkout_overview(inventory_page: InventoryPage, first_name, last_name, postal_code):
+
     inventory_page.add_item_to_cart("sauce-labs-backpack")
 
     cart_page = inventory_page.go_to_cart()
@@ -50,9 +46,3 @@ def test_continue_button_navigates_to_checkout_overview(page: Page, first_name, 
 
     checkout_overview_page = checkout_page.submit_checkout_information(first_name, last_name, postal_code)
     assert checkout_overview_page.get_page_title().text_content() == "Checkout: Overview"
-
-
-def test_verify_thank_you_message(page: Page):
-    # Click Finish
-    # Assert the Message
-    pass

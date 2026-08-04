@@ -1,21 +1,15 @@
-from playwright.sync_api import Page
 import pytest
+from playwright.sync_api import Page
 
 from pages.LoginPage import LoginPage
-from pages.InventoryPage import InventoryPage
  
 
-def test_login_credentials_are_displayed(page: Page):
-    login_page = LoginPage(page)
-    login_page.open()
+
+def test_login_credentials_are_displayed(login_page: LoginPage):
     assert "standard_user" in login_page.get_login_credentials().inner_html()
     assert "secret_sauce" in login_page.get_login_password().inner_html()
 
-def test_standard_user_login(page: Page):
-    login_page = LoginPage(page)
-    login_page.open()
-
-    inventory_page = login_page.login_standard_user()
+def test_standard_user_login(login_page: LoginPage):
     assert inventory_page.get_title().text_content() == "Products"
 
 # Positive Login
@@ -28,10 +22,7 @@ def test_standard_user_login(page: Page):
         "visual_user",
     ],
 )
-def test_valid_users_login(page: Page, username):
-    # Login Object only has to to Loging locators and Methods
-    login_page = LoginPage(page)
-    login_page.open()
+def test_valid_users_login(login_page: LoginPage, username):
     invetory_page = login_page.login_user(username, "secret_sauce")
     # Only has access to Invetory stuff
     assert invetory_page.get_title().text_content() == "Products"
@@ -45,9 +36,7 @@ def test_valid_users_login(page: Page, username):
         ("not_a_user", "Epic sadface: Username and password do not match any user in this service"),
     ],
 )
-def test_invalid_login_fails(page: Page, username, error):
-    login_page = LoginPage(page)
-    login_page.open()
+def test_invalid_login_fails(login_page: LoginPage, username, error):
     login_page.submit_login(username, "secret_sauce")
 
     actual_error = login_page.get_error_message().text_content()
