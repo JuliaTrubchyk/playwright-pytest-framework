@@ -10,6 +10,7 @@ def test_login_credentials_are_displayed(login_page: LoginPage):
     assert "secret_sauce" in login_page.get_login_password().inner_html()
 
 def test_standard_user_login(login_page: LoginPage):
+    inventory_page = login_page.login_standard_user()
     assert inventory_page.get_title().text_content() == "Products"
 
 # Positive Login

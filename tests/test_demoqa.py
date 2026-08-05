@@ -28,7 +28,7 @@ def test_demoqa(page: Page, first, last, email) -> None:
     page.get_by_text("Sports").click()
     assert page.get_by_role("checkbox", name="Sports").is_visible()
 
-    page.locator("#uploadPicture").set_input_files("tests/test_data/test_image.png")
+    page.locator("#uploadPicture").set_input_files("test_data/test_image.png")
 
     page.get_by_role("textbox", name="Current Address").click()
     page.get_by_role("textbox", name="Current Address").fill("123 Main St")

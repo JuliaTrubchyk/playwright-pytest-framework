@@ -53,7 +53,7 @@ def test_hovers(page: Page) -> None:
 
 def test_upload(page: Page) -> None:
     page.goto("https://the-internet.herokuapp.com/upload")
-    page.locator("#file-upload").set_input_files("tests/test_data/resume.txt")
+    page.locator("#file-upload").set_input_files("test_data/resume.txt")
     page.locator("#file-submit").click()
 
 
@@ -63,20 +63,8 @@ def test_drag_and_drop(page: Page) -> None:
     b = page.locator("#column-b")
     a.drag_to(b)
 
-# not working - looking for the way to fix. Have another version of this method below that is work
+
 def test_context_window(page: Page) -> None:
-    page.goto("https://the-internet.herokuapp.com/context_menu")
-    # page.once("dialog", lambda dialog: dialog.dismiss())
-    with page.expect_dialog() as dialog:
-        page.locator("#hot-spot").click(button="right")
-
-    dialog = dialog.value
-
-    assert dialog.message == "You selected a context menu"
-
-    dialog.accept()
-
-def test_context_window2(page: Page) -> None:
     page.goto("https://the-internet.herokuapp.com/context_menu")
 
     dialog_message = ""
@@ -96,7 +84,7 @@ def test_context_window2(page: Page) -> None:
     "link",
     [
         "random_data.txt",
-        "upload_test.txt"
+        "upload-me.txt"
     ],
 )
 def test_file_download(page: Page, link: str) -> None:
@@ -111,9 +99,11 @@ def test_file_download(page: Page, link: str) -> None:
 
 def test_hidden_ad(page: Page) -> None:
     page.goto("https://the-internet.herokuapp.com/entry_ad")
+
     modal = page.locator("#modal")
-    assert modal.wait_for(state="visible")
+    modal.wait_for(state="visible")
 
     page.get_by_text("Close", exact=True).click()
+
     modal.wait_for(state="hidden")
     assert not modal.is_visible()
