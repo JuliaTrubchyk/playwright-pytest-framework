@@ -20,3 +20,8 @@ def test_add_item_to_cart(inventory_page: InventoryPage):
     assert cart_page.get_item_count() == 1
     # assert the item name is correct
     assert "Sauce Labs Backpack" in cart_page.get_item_name()
+
+# example using fixture
+def test_added_item_appears_in_cart(cart_with):
+    cart_page = cart_with("sauce-labs-backpack")
+    assert cart_page.get_item_count() == 1
