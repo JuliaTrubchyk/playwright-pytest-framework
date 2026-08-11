@@ -1,9 +1,36 @@
+import os
 import pytest
+from dotenv import load_dotenv
+
 from playwright.sync_api import Page
 from pages.CheckoutOverviewPage import CheckoutOverviewPage
 from pages.CheckoutPage import CheckoutPage
 from pages.InventoryPage import InventoryPage
 from pages.LoginPage import LoginPage
+
+load_dotenv()
+USERNAME = os.getenv("SAUCE_USERNAME")
+PASSWORD = os.getenv("SAUCE_PASSWORD")
+BASE_URL = os.getenv("BASE_URL")
+
+AUTH_STATE_PATH = "playwright/.auth/state.json"
+
+
+@pytest.fixture(scope="session")
+def auth_state(browser):
+
+    # Create the path
+    os.makedirs(os.path.dirname(AUTH_STATE_PATH), exist_ok=True)
+
+    context = browser.new_context(base_url=BASE_URL)
+    login_page = LoginPage(context.new_page())
+    login_page.open()
+    login_page.login_user(USERNAME, PASSWORD)
+    context.storage_state(path="AUTH_STATE_PATH")
+    context.close()
+
+    return AUTH_STATE_PATH
+
 
 @pytest.fixture
 def login_page(page: Page) -> LoginPage:
@@ -11,6 +38,10 @@ def login_page(page: Page) -> LoginPage:
     login_page = LoginPage(page)
     login_page.open()
     return login_page
+
+@pytest.fixture
+def login_page(page: Page) -> LoginPage:
+    return new_context(storage_state=auth_state).new_page()
 
 @pytest.fixture
 def inventory_page(login_page: LoginPage) -> InventoryPage:
