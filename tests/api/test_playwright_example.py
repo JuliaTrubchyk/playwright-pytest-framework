@@ -1,4 +1,4 @@
-import playwright
+
 from playwright.async_api import APIRequestContext, Playwright
 import pytest
 

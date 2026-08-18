@@ -1,5 +1,8 @@
 import requests
+import pytest
 
+
+pytestmark = pytest.mark.api
 
 BASE_URL = "https://restful-booker.herokuapp.com"
 

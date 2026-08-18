@@ -26,7 +26,7 @@ def auth_state(browser):
     login_page = LoginPage(context.new_page())
     login_page.open()
     login_page.login_user(USERNAME, PASSWORD)
-    context.storage_state(path="AUTH_STATE_PATH")
+    context.storage_state(path=AUTH_STATE_PATH)
     context.close()
 
     return AUTH_STATE_PATH
