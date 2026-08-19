@@ -83,8 +83,8 @@ def test_context_window(page: Page) -> None:
 @pytest.mark.parametrize(
     "link",
     [
-        "random_data.txt",
-        "upload-me.txt"
+        "random_data_18.txt",
+        "sample-upload.txt"
     ],
 )
 def test_file_download(page: Page, link: str) -> None:
