@@ -46,3 +46,5 @@ def created_booking(booking_client):
     booking_id = response_body["bookingid"]
 
     yield booking_id, payload                           # fixture gives two values to the test. Payload is a Python dictionary
+
+    booking_client.delete_booking(booking_id)           #

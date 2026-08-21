@@ -26,9 +26,6 @@ def test_booking_appears_in_ids(booking_client : BookingAPIClient, created_booki
     assert booking_id in ids
 
 
-
-
-
 # GetBookingIds       /booking
 def  test_json(booking_client : BookingAPIClient):
     rows = booking_client.get_booking_ids().json()

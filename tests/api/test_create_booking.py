@@ -12,6 +12,7 @@ def test_create_booking(booking_client: BookingAPIClient):     # method looks fo
     assert response.json()["bookingid"] 
     assert response.json()["booking"] == payload
 
+
 # Negative
 def test_create_without_field(booking_client: BookingAPIClient):
     payload = make_booking()

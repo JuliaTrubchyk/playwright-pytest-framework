@@ -33,4 +33,9 @@ class BookingAPIClient:
             headers=self._auth_headers()
         )
 
+    def delete_booking(self, booking_id):
+        return self.session.delete(
+            f"/booking/{booking_id}",
+            headers=self._auth_headers()
+        )
     
