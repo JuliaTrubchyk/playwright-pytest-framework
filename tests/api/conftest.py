@@ -22,14 +22,14 @@ def api_session():
 
 @pytest.fixture(scope="session")
 def auth_token(api_session) -> str:
-    response = requests.post(
-        f"{BASE_URL}/auth",
+    r = api_session.post(
+        f"/auth",
         json={
             "username": "admin",
             "password": "password123"
         }
     )
-    return response.json()["token"]
+    return r.json()["token"]
 
 
 @pytest.fixture
