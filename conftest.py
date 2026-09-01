@@ -1,13 +1,14 @@
 import os
 import pytest
 from dotenv import load_dotenv
-
 from playwright.sync_api import Browser, Page
+
 from pages.CheckoutOverviewPage import CheckoutOverviewPage
 from pages.CheckoutPage import CheckoutPage
 from pages.InventoryPage import InventoryPage
 from pages.LoginPage import LoginPage
 
+pytest_plugins = ["support.allure_hooks"]
 load_dotenv()
 
 USERNAME = os.getenv("SAUCE_USERNAME")
