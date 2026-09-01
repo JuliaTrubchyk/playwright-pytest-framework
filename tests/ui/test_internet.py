@@ -80,22 +80,43 @@ def test_context_window(page: Page) -> None:
 
     assert dialog_message == "You selected a context menu"
 
-@pytest.mark.parametrize(
-    "link",
-    [
-        "random_data_18.txt",
-        "sample-upload.txt"
-    ],
-)
-def test_file_download(page: Page, link: str) -> None:
+# @pytest.mark.parametrize(
+#     "link",
+#     [
+#         "random_data_18.txt",
+#         "sample-upload.txt"
+#     ],
+# )
+# def test_file_download(page: Page, link: str) -> None:
+#     page.goto("https://the-internet.herokuapp.com/download")
+
+#     with page.expect_download() as download_info:
+#         page.get_by_role("link", name=link, exact=True).click()
+
+#     download = download_info.value
+
+#     assert download.suggested_filename == link
+
+def test_upload_then_download_roundtrip(page: Page, tmp_path) -> None:
+    """/download lists whatever strangers upload, so hardcoded filenames rot.
+    Fix: OWN the data — upload a uniquely named file, then download that exact file.
+    (tmp_path is a pytest built-in fixture: a fresh temp folder per test.)"""
+    file_name = f"pliskin-{uuid.uuid4().hex[:8]}.txt"
+    local_file = tmp_path / file_name
+    local_file.write_text("uploaded by the pliskin_june11 test suite")
+ 
+    # Arrange: put our own file on the server
+    page.goto("https://the-internet.herokuapp.com/upload")
+    page.locator("#file-upload").set_input_files(local_file)
+    page.locator("#file-submit").click()
+    expect(page.locator("#uploaded-files")).to_have_text(file_name)
+ 
+    # Act + assert: it must now appear on /download, under the name WE chose
     page.goto("https://the-internet.herokuapp.com/download")
-
     with page.expect_download() as download_info:
-        page.get_by_role("link", name=link, exact=True).click()
-
-    download = download_info.value
-
-    assert download.suggested_filename == link
+        page.get_by_role("link", name=file_name, exact=True).click()
+    assert download_info.value.suggested_filename == file_name
+ 
 
 def test_hidden_ad(page: Page) -> None:
     page.goto("https://the-internet.herokuapp.com/entry_ad")
